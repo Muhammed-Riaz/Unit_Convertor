@@ -168,12 +168,13 @@ conversion_factors = {
 
 def convert_units(value, from_unit, to_unit, category):
     factors = conversion_factors.get(category, {})
+
     if category == "Temperature":
-        # Special handling for temperature
-        base_value = factors[from_unit]["to_base"](value)
-        return factors[to_unit]["from_base"](base_value)
-    else:
-        return (value * factors[from_unit]) / factors[to_unit]
+        base_value = factors[from_unit](value)  
+        return factors[to_unit](base_value)  
+    
+    return (value * factors[from_unit]) / factors[to_unit]  
+
 
 
 st.set_page_config(page_title="Unit Converter", layout="wide")
@@ -198,7 +199,7 @@ value1 = st.number_input("Enter Value", value=1.0, step=0.1, format="%f")
 try:
     if st.button("Click to Convert"):
      value2 = convert_units(value1, from_unit, to_unit, conversion_type)
-     st.markdown(f"<p style='text-align: center; font-size: 28px; color: red;'>Result : {value2:.4f} ❤️ </p> ", unsafe_allow_html=True)
+     st.markdown(f"<p style='text-align: center; font-size: 28px; color: green;'>Result : {from_unit} to {to_unit} = {value2:.4f}  </p> ", unsafe_allow_html=True)
 
 
 except Exception as e:
